@@ -3,35 +3,47 @@ package collections.list;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalDouble;
+import java.util.stream.IntStream;
 
 public class HashMapTask {
+    private static final int HIGH_VALUE = 5;
     private Map<String, ArrayList<Integer>> journal = new HashMap<>();
 
     private void addStudentAndRateIt(String nameStudent, int rate) {
-        if (rate > 5) {
-            rate = 5;
+        ArrayList<Integer> scores;
+        if (rate > HIGH_VALUE) {
+            rate = HIGH_VALUE;
         }
-        if (journal.containsKey(nameStudent)) {
-            ArrayList<Integer> scores = journal.get(nameStudent);
-            scores.add(rate);
-        } else {
-            ArrayList<Integer> scores = new ArrayList<>();
-            scores.add(rate);
-            journal.put(nameStudent, scores);
-        }
+
+        scores = getStudentScores(nameStudent);
+        scores.add(rate);
+
+        journal.put(nameStudent, scores);
 
     }
 
-    private double average(String nameStudent) {
-        double sumNumber = 0;
+    private ArrayList<Integer> getStudentScores(String nameStudent) {
+        ArrayList<Integer> scores;
         if (journal.containsKey(nameStudent)) {
-            ArrayList<Integer> scores = journal.get(nameStudent);
-            for (int number : scores) {
-                sumNumber += number;
+            scores = journal.get(nameStudent);
+        } else {
+            scores = new ArrayList<>();
+        }
+        return scores;
+    }
+
+    private double average(String studentName) {
+        double sumNumber = 0;
+        if (journal.containsKey(studentName)) {
+            OptionalDouble average = journal.get(studentName).stream()
+                    .mapToDouble(m -> m)
+                    .average();
+
+            if (average.isPresent()) {
+                System.out.println(average.getAsDouble());
             }
-            double averageScore = sumNumber / scores.size();
-            System.out.println(averageScore);
-            return averageScore;
+            return average.getAsDouble();
         } else {
             System.out.println("There's no such student!");
             return sumNumber;
@@ -41,12 +53,12 @@ public class HashMapTask {
     public static void main(String[] args) {
         HashMapTask test = new HashMapTask();
 
-        test.addStudentAndRateIt("Lisa", 5);
+        test.addStudentAndRateIt("Lisa", HIGH_VALUE);
         test.addStudentAndRateIt("Oleg", 4);
         test.addStudentAndRateIt("Lilia", 3);
         test.addStudentAndRateIt("Jack", 4);
         test.addStudentAndRateIt("Bob", 4);
-        test.addStudentAndRateIt("Bob", 5);
+        test.addStudentAndRateIt("Bob", HIGH_VALUE);
 
         test.average("Bob");
 
