@@ -10,12 +10,12 @@ public class LinkedListTask {
         myList.add(text);
     }
 
-    public void removeDuplicate(List<String> list) {
+    public List<String> removeDuplicate(List<String> list) {
+        List<String> collectList = Collections.emptyList();
         if (!(list.isEmpty())) {
-            Set<String> noDuplicate = new HashSet<>(list);
-            list.clear();
-            list.addAll(noDuplicate);
+           collectList = list.stream().distinct().toList();
         }
+        return collectList;
     }
 
     public static void main(String[] args) {
@@ -27,7 +27,9 @@ public class LinkedListTask {
         test.addString("c Hello One");
         test.addString("a Hello Three");
 
-        test.removeDuplicate(test.myList);
+        List<String> strings = test.removeDuplicate(test.myList);
+        System.out.println(strings);
+
 
         Collections.sort(test.myList);
 

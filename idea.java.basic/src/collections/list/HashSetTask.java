@@ -1,4 +1,5 @@
 package collections.list;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -11,21 +12,30 @@ public class HashSetTask {
         }
     }
 
-    private void check(Set<Object> list, Object o) {
-        boolean notFound = false;
-        if (!(list.isEmpty())) {
-            for (Object object : list) {
-                if (o.equals(object)) {
-                    System.out.println("We found: " + object);
-                    notFound = true;
-                    break;
-                }
-            }
-            if (!(notFound)) {
-                System.out.println("Not found");
-            }
+    private void check(Set<Object> set, Object object) {
+        if (!(set.isEmpty()) && isElementPresented(set, object)) {
+            System.out.println("We found: " + object);
         }
     }
+
+    private boolean isElementPresented(Set<Object> myHashSet, Object obj) {
+        return myHashSet.contains(obj);
+    }
+
+
+//            for (Object object : list) {
+//                if (o.equals(object)) {
+//                    System.out.println("We found: " + object);
+//                    notFound = true;
+//                    break;
+//                }
+//            }
+//            if (!(notFound)) {
+//                System.out.println("Not found");
+//            }
+//        }
+
+
 
     private void addObject(Object o) {
         myHashSet.add(o);
